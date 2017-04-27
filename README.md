@@ -21,10 +21,9 @@ Help:
 The script assumes you have a `config.json` file in the same directory as the
 script.
 
+Example `config.json` file:
+
 ```json
-
-Example config file.
-
 {
   "exclude_with_list": [
     "Done",
