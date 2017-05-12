@@ -9,7 +9,7 @@ import logging
 import requests
 
 parser = argparse.ArgumentParser(
-    description="""A lettersmith plugin.""",
+    description="""Publish GitHub issues from a Trello .json export file.""",
 )
 parser.add_argument(
     'export_file',
