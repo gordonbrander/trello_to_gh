@@ -4,6 +4,7 @@ import argparse
 from trello_to_gh import util
 from trello_to_gh import trello
 from os import path, makedirs
+import logging
 
 parser = argparse.ArgumentParser(
     description="""A lettersmith plugin.""",
@@ -48,9 +49,6 @@ if __name__ == "__main__":
     config = args.config_file
     cache_dir = args.cache_dir
 
-    exclude_with_list = config.get("exclude_with_list", [])
-    exclude_with_label = config.get("exclude_with_label", [])
-
     # Make sure cache dir exists
     issues_cache_dir = path.join(cache_dir, "issues_json")
     try:
@@ -58,41 +56,7 @@ if __name__ == "__main__":
     except FileExistsError:
         pass
 
-    # Create list/label `name: id` maps
-    list_id_by_name = {x["name"]: x["id"] for x in trello_export["lists"]}
-    label_id_by_name = {x["name"]: x["id"] for x in trello_export["labels"]}
-
-    exclude_list_ids = frozenset(
-        list_id_by_name[name]
-        for name in exclude_with_list
-    )
-
-    exclude_label_ids = frozenset(
-        label_id_by_name[name]
-        for name in exclude_with_label
-    )
-
-    cards = trello_export["cards"]
-
-    # Filter out archived
-    cards = (card for card in cards
-        if not trello.is_archived(card))
-
-    # Filter out excluded lists
-    cards = tuple(
-        card for card in cards
-        if card["idList"] not in exclude_list_ids)
-
-    # Filter out excluded labels
-    cards = (
-        card for card in cards
-        if frozenset(card["idLabels"]).isdisjoint(exclude_label_ids)
-    )
-
-    cards_full = (trello.collate_card(card, trello_export) for card in cards)
-
-    # Read cards
-    issues = (trello.read_card_to_issue(card, config) for card in cards_full)
+    issues = trello.collate_issues(trello_export, config)
 
     for issue in issues:
         file_title = util.safe_filename(issue["title"])
