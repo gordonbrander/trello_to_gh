@@ -22,8 +22,15 @@ parser.add_argument(
 )
 
 parser.add_argument(
+    '--credentials_file', '-p',
+    help="Path to credentials .json file that contains oauth token (defaults to credentials.json)",
+    type=util.read_json,
+    default="credentials.json"
+)
+
+parser.add_argument(
     '--cache_dir', "-d",
-    help="Path to cache dir",
+    help="Path to cache dir (defaults to \"cache\")",
     type=str,
     default="cache"
 )
@@ -41,6 +48,9 @@ if __name__ == "__main__":
     config = args.config_file
     cache_dir = args.cache_dir
 
+    exclude_with_list = config.get("exclude_with_list", [])
+    exclude_with_label = config.get("exclude_with_label", [])
+
     # Make sure cache dir exists
     issues_cache_dir = path.join(cache_dir, "issues_json")
     try:
@@ -48,17 +58,18 @@ if __name__ == "__main__":
     except FileExistsError:
         pass
 
+    # Create list/label `name: id` maps
     list_id_by_name = {x["name"]: x["id"] for x in trello_export["lists"]}
     label_id_by_name = {x["name"]: x["id"] for x in trello_export["labels"]}
 
     exclude_list_ids = frozenset(
         list_id_by_name[name]
-        for name in config["exclude_with_list"]
+        for name in exclude_with_list
     )
 
     exclude_label_ids = frozenset(
         label_id_by_name[name]
-        for name in config["exclude_with_label"]
+        for name in exclude_with_label
     )
 
     cards = trello_export["cards"]
