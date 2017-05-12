@@ -62,13 +62,39 @@ Example `config.json` file:
 
 ### credentials.json
 
+This script uses an OAuth token to autheticate with the GitHub API. This will
+increase the rate limit to 5000 (meaning you can POST up to 5000 issues before
+GitHub will give you a time-out).
+
+To use the `publish` action, you're required to create a credentials JSON file
+(by default `credentials.json`) with the following content:
+
 Example:
 
 ```json
 {
-  "oauth_token": ""
+  "oauth_token": "YOUR_OAUTH_TOKEN_HERE"
 }
 ```
+
+You can get an OAuth token here: https://github.com/settings/tokens/new. The
+only priviledges this script needs are the `repo` privileges. Check those,
+generate a token, and you're good to go!
+
+## Actions
+
+By default the script will load what has been read from the export file into the
+cache directory and then publish everything in the cache directory to GitHub.
+
+If you want to do a dry run or prune the issues before publishing, you can
+run this script with `--actions load_cache`. This will create a cache full
+of .json files that you can edit.
+
+To publish a pruned list, without overwriting the changes you've made,
+run the script again with `--actions publish`. This will publish anything
+found in the cache directory, without first writing to the cache directory.
+
+To do it all in one go, either omit the `actions` flag, or specify `--actions load_cache publish`.
 
 ## Other Tools
 
