@@ -1,8 +1,12 @@
 # trello_to_gh
 
-WORK IN PROGRESS
-
 A quick-and-dirty script to convert Trello's export JSON file into GitHub Issues, and publish them to Github.
+
+- Labels can be re-mapped
+- You can exclude all cards in a particular list
+- You can exclude all cards with a particular label
+- A link back to the original card is provided in the body
+- Card comments are added to the bottom of the issue body text
 
 ## Installing
 
@@ -32,6 +36,10 @@ Example `config.json` file:
 
 ```json
 {
+  "github": {
+    "owner": "gh_org",
+    "repo": "repo_name"
+  },
   "exclude_with_list": [
     "Done",
     "Global Timeline",
@@ -98,7 +106,7 @@ To do it all in one go, either omit the `actions` flag, or specify `--actions lo
 
 ## Retrying After Hitting Rate-Limit
 
-Most users shouldn't hit this case, since GitHub will allow up to 5000 issues to be created in one go. In the rare chance that you have more than 5000 issues to publish, the script has a workaround for starting a new request where you last left off.
+Most users shouldn't hit this case, since GitHub will allow up to 5000 issues to be created in one go. In the rare chance that you have more than 5000 issues to publish, the script has a workaround for picking up where you last left off.
 
 After successfully publishing an issue, the script will move the issue's cache file from the cache `queue` directory to the cache `published` directory. This means when a rate-limit causes the script to fail, the queue folder will contain just the files that haven't yet been published.
 
