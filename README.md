@@ -18,8 +18,15 @@ Help:
 
 ## Configuring
 
+The script assumes two configuration files:
+
+- `config.json` contains the Github-to-Trello configuration (can be customized via `--config_file` flag)
+- `credentials.json` contains a GitHub OAuth token for communicating with GitHub's API.
+
 The script assumes you have a `config.json` file in the same directory as the
 script.
+
+### config.json
 
 Example `config.json` file:
 
@@ -40,14 +47,31 @@ Example `config.json` file:
     "RFC",
     "Community / Communications"
   ],
+  "add_labels": ["from-trello"],
   "remap_labels": {
-    "UI": "ui",
-    "Cloud": "cloud",
-    "Backend": "backend",
-    "Hardware": "hardware",
-    "Manufacturing": "hardware",
-    "Mech Support": "hardware",
-    "Computer Vision / ML": "cv"
+    "UI": ["ui"],
+    "Cloud": ["cloud"],
+    "Backend": ["backend"],
+    "Hardware": ["hardware"],
+    "Manufacturing": ["hardware"],
+    "Mech Support": ["hardware"],
+    "Computer Vision / ML": ["cv"]
   }
 }
 ```
+
+### credentials.json
+
+Example:
+
+```json
+{
+  "oauth_token": ""
+}
+```
+
+## Other Tools
+
+You might also want to take a look at these other tools:
+
+- https://github.com/RickyCook/import-trello-github
