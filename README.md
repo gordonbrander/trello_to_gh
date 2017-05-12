@@ -81,7 +81,7 @@ You can get an OAuth token here: https://github.com/settings/tokens/new. The
 only priviledges this script needs are the `repo` privileges. Check those,
 generate a token, and you're good to go!
 
-## Actions
+## Editing before Publishing
 
 By default the script will load what has been read from the export file into the
 cache directory and then publish everything in the cache directory to GitHub.
@@ -95,6 +95,14 @@ run the script again with `--actions publish`. This will publish anything
 found in the cache directory, without first writing to the cache directory.
 
 To do it all in one go, either omit the `actions` flag, or specify `--actions load_cache publish`.
+
+## Retrying After Hitting Rate-Limit
+
+Most users shouldn't hit this case, since GitHub will allow up to 5000 issues to be created in one go. In the rare chance that you have more than 5000 issues to publish, the script has a workaround for starting a new request where you last left off.
+
+The `load_cache` action will write JSON files to the `queue` directory in the cache folder. These are the files that are read and published as GitHub issues. After a successful publish, the script will move the file from the `queue` directory to `published` directory. This means when a rate-limit causes the script to fail, the queue folder will contain just the files that haven't yet been published.
+
+You can start publishing where you left off by specifying ONLY the `publish` flag and NOT the `load_cache` flag (`--actions publish`).
 
 ## Other Tools
 
