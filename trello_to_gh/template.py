@@ -1,7 +1,6 @@
 ISSUE_TEMPLATE = """{{desc}}
 
-(Imported from Trello card: {{url}})
-
+(Exported from Trello {{url}})
 
 {{#actions}}
 ---
