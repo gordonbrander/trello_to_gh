@@ -66,21 +66,16 @@ def collate_issues(trello_export, config):
     return an iterable dicts suitable for serializing as GH issue JSON blobs.
     """
     exclude_with_list = config.get("exclude_with_list", [])
-    exclude_with_label = config.get("exclude_with_label", [])
-
-    # Create list/label `name: id` maps
-    list_id_by_name = {x["name"]: x["id"] for x in trello_export["lists"]}
-    label_id_by_name = {x["name"]: x["id"] for x in trello_export["labels"]}
-
     exclude_list_ids = frozenset(
-        list_id_by_name[name]
-        for name in exclude_with_list
-    )
+        trello_list["id"]
+        for trello_list in trello_export["lists"]
+        if trello_list["name"] in exclude_with_list)
 
+    exclude_with_label = config.get("exclude_with_label", [])
     exclude_label_ids = frozenset(
-        label_id_by_name[name]
-        for name in exclude_with_label
-    )
+        trello_label["id"]
+        for trello_label in trello_export["labels"]
+        if trello_label["name"] in exclude_with_label)
 
     cards = trello_export["cards"]
 
