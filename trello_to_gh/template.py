@@ -1,3 +1,4 @@
+# Mustache template for issue body
 ISSUE_TEMPLATE = """{{desc}}
 
 (Exported from Trello {{url}})
