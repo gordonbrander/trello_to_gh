@@ -3,6 +3,7 @@
 A quick-and-dirty script to convert Trello's export JSON file into GitHub Issues, and publish them to Github.
 
 - Labels can be re-mapped
+- Lists can be re-mapped to labels and/or milestones
 - You can exclude all cards in a particular list
 - You can exclude all cards with a particular label
 - A link back to the original card is provided in the body
@@ -64,6 +65,25 @@ Example `config.json` file:
     "Manufacturing": ["hardware"],
     "Mech Support": ["hardware"],
     "Computer Vision / ML": ["cv"]
+  },
+  "remap_lists": {
+    "Icebox": {
+      "milestone": 1,
+      "labels": ["icebox"]
+    },
+    "Current sprint": {
+      "milestone": 2
+    },
+    "Next sprint": {
+      "milestone": 2
+    },
+    "Doing": {
+      "milestone": 2
+    },
+    "Blocked": {
+      "milestone": 2,
+      "labels": ["blocked"]
+    }
   }
 }
 ```
