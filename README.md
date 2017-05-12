@@ -100,9 +100,9 @@ To do it all in one go, either omit the `actions` flag, or specify `--actions lo
 
 Most users shouldn't hit this case, since GitHub will allow up to 5000 issues to be created in one go. In the rare chance that you have more than 5000 issues to publish, the script has a workaround for starting a new request where you last left off.
 
-The `load_cache` action will write JSON files to the `queue` directory in the cache folder. These are the files that are read and published as GitHub issues. After a successful publish, the script will move the file from the `queue` directory to `published` directory. This means when a rate-limit causes the script to fail, the queue folder will contain just the files that haven't yet been published.
+After successfully publishing an issue, the script will move the issue's cache file from the cache `queue` directory to the cache `published` directory. This means when a rate-limit causes the script to fail, the queue folder will contain just the files that haven't yet been published.
 
-You can start publishing where you left off by specifying ONLY the `publish` flag and NOT the `load_cache` flag (`--actions publish`).
+You can start publishing where you left off by specifying ONLY the `publish` flag and OMITTING the `load_cache` flag (`--actions publish`).
 
 ## Other Tools
 
